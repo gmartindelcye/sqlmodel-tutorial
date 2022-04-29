@@ -32,6 +32,14 @@ def create_heroes():
 
         session.commit()
 
+        session.refresh(hero_1)
+        session.refresh(hero_2)
+        session.refresh(hero_3)
+
+    print("Hero 1:", hero_1)
+    print("Hero 2:", hero_2)
+    print("Hero 3:", hero_3)
+
 
 def main():
     create_db_and_tables()
