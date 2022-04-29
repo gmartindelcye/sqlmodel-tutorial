@@ -86,6 +86,20 @@ def select_heroes_by_out_age_range(le: int, gt: int):
         print(heroes)
 
 
+def update_hero_age(id: int, age: int):
+    """Select Hero by Id. Then updates age."""
+    with Session(engine) as session:
+        hero = session.get(Hero, id)
+        print(hero)
+
+        hero.age = age
+
+        session.add(hero)
+        session.commit()
+        session.refresh(hero)
+        print(hero)
+
+
 def main():
     create_db_and_tables()
     create_heroes()
@@ -94,6 +108,7 @@ def main():
     select_hero_by_id(6)
     select_heroes_by_age_range(35, 45)
     select_heroes_by_out_age_range(35, 90)
+    update_hero_age(id=2, age=16)
 
 
 if __name__ == "__main__":
