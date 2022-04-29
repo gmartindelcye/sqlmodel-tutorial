@@ -1,0 +1,6 @@
+greenlet==1.1.2
+pydantic==1.9.0
+SQLAlchemy==1.4.36
+sqlalchemy2-stubs==0.0.2a22
+sqlmodel==0.0.6
+typing_extensions==4.2.0
