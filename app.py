@@ -57,24 +57,28 @@ def select_heroes():
 
 
 def select_hero_by_name(name: str):
+    """Select hero by name. Using 'one' instead of 'first'."""
     with Session(engine) as session:
         hero = session.exec(select(Hero).where(Hero.name == name)).one()
         print(hero)
 
 
 def select_hero_by_id(id: int):
+    """Select Hero by Id. Using 'get' instead of 'exec'."""
     with Session(engine) as session:
         hero = session.get(Hero, id)
         print(hero)
 
 
 def select_heroes_by_age_range(ge: int, lt: int):
+    """Select heroes in the age range"""
     with Session(engine) as session:
         heroes = session.exec(select(Hero).where(Hero.age >= ge, Hero.age < lt)).all()
         print(heroes)
 
 
 def select_heroes_by_out_age_range(le: int, gt: int):
+    """Select heroes out of the selected age range"""
     with Session(engine) as session:
         heroes = session.exec(
             select(Hero).where(or_(Hero.age <= le, Hero.age > gt))
