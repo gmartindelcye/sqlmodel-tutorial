@@ -58,13 +58,13 @@ def select_heroes():
 
 def select_hero_by_name(name: str):
     with Session(engine) as session:
-        hero = session.exec(select(Hero).where(Hero.name == name)).first()
+        hero = session.exec(select(Hero).where(Hero.name == name)).one()
         print(hero)
 
 
 def select_hero_by_id(id: int):
     with Session(engine) as session:
-        hero = session.exec(select(Hero).where(Hero.id == id)).first()
+        hero = session.get(Hero, id)
         print(hero)
 
 
