@@ -100,6 +100,19 @@ def update_hero_age(id: int, age: int):
         print(hero)
 
 
+def delete_hero(id: str):
+    """Select Hero by Id. Then delete it."""
+    with Session(engine) as session:
+        hero = session.get(Hero, id)
+
+        session.delete(hero)  #
+        session.commit()  #
+
+        hero = session.get(Hero, id)
+        if hero is None:  #
+            print(f"There's no hero with id: {id}")
+
+
 def main():
     create_db_and_tables()
     create_heroes()
@@ -109,6 +122,7 @@ def main():
     select_heroes_by_age_range(35, 45)
     select_heroes_by_out_age_range(35, 90)
     update_hero_age(id=2, age=16)
+    delete_hero(5)
 
 
 if __name__ == "__main__":
