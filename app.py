@@ -3,11 +3,19 @@ from typing import Optional
 from sqlmodel import Field, Session, SQLModel, create_engine, or_, select
 
 
+class Team(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+    headquarters: str
+
+
 class Hero(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     secret_name: str
     age: Optional[int] = Field(default=None, index=True)
+
+    team_id: Optional[int] = Field(default=None, foreign_key="team.id")
 
 
 sqlite_file_name = "database.db"
@@ -21,15 +29,28 @@ def create_db_and_tables():
 
 
 def create_heroes():
-    hero_1 = Hero(name="Deadpond", secret_name="Dive Wilson")
-    hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
-    hero_3 = Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48)
-    hero_4 = Hero(name="Tarantula", secret_name="Natalia Roman-on", age=32)
-    hero_5 = Hero(name="Black Lion", secret_name="Trevor Challa", age=35)
-    hero_6 = Hero(name="Dr. Weird", secret_name="Steve Weird", age=36)
-    hero_7 = Hero(name="Captain North", secret_name="Esteban Roger", age=93)
-
     with Session(engine) as session:
+        team_preventers = Team(name="Preventers", headquarters="Sharp Tower")
+        team_z_force = Team(name="Z-Force", headquarters="Sister Margaret’s Bar")
+        session.add(team_preventers)
+        session.add(team_z_force)
+        session.commit()
+
+        hero_1 = Hero(
+            name="Deadpond", secret_name="Dive Wilson", team_id=team_z_force.id
+        )
+        hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
+        hero_3 = Hero(
+            name="Rusty-Man",
+            secret_name="Tommy Sharp",
+            age=48,
+            team_id=team_preventers.id,
+        )
+        hero_4 = Hero(name="Tarantula", secret_name="Natalia Roman-on", age=32)
+        hero_5 = Hero(name="Black Lion", secret_name="Trevor Challa", age=35)
+        hero_6 = Hero(name="Dr. Weird", secret_name="Steve Weird", age=36)
+        hero_7 = Hero(name="Captain North", secret_name="Esteban Roger", age=93)
+
         session.add(hero_1)
         session.add(hero_2)
         session.add(hero_3)
@@ -117,12 +138,12 @@ def main():
     create_db_and_tables()
     create_heroes()
     select_heroes()
-    select_hero_by_name("Deadpond")
-    select_hero_by_id(6)
-    select_heroes_by_age_range(35, 45)
-    select_heroes_by_out_age_range(35, 90)
-    update_hero_age(id=2, age=16)
-    delete_hero(5)
+    # select_hero_by_name("Deadpond")
+    # select_hero_by_id(6)
+    # select_heroes_by_age_range(35, 45)
+    # select_heroes_by_out_age_range(35, 90)
+    # update_hero_age(id=2, age=16)
+    # delete_hero(5)
 
 
 if __name__ == "__main__":
