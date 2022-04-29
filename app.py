@@ -134,6 +134,14 @@ def delete_hero(id: str):
             print(f"There's no hero with id: {id}")
 
 
+def select_heroes_teams():
+    with Session(engine) as session:
+        statement = select(Hero, Team).where(Hero.team_id == Team.id)
+        results = session.exec(statement)
+        for hero, team in results:
+            print("Hero:", hero, "Team:", team)
+
+
 def main():
     create_db_and_tables()
     create_heroes()
@@ -144,6 +152,7 @@ def main():
     # select_heroes_by_out_age_range(35, 90)
     # update_hero_age(id=2, age=16)
     # delete_hero(5)
+    select_heroes_teams()
 
 
 if __name__ == "__main__":
