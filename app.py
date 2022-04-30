@@ -152,6 +152,17 @@ def select_heroes_and_teams():
             print("Hero:", hero, "Team:", team)
 
 
+def assign_hero_to_team(teamid: int, heroid: int):
+    """Seach hero by id, assign team id"""
+    with Session(engine) as session:
+        hero = session.get(Hero, heroid)
+        if hero:
+            hero.team_id = teamid
+            session.add(hero)
+            session.commit()
+            session.refresh(hero)
+
+
 def main():
     create_db_and_tables()
     create_heroes()
@@ -163,6 +174,7 @@ def main():
     # update_hero_age(id=2, age=16)
     # delete_hero(5)
     select_heroes_teams()
+    assign_hero_to_team(2, 7)
     select_heroes_and_teams()
 
 
