@@ -163,6 +163,17 @@ def assign_hero_to_team(teamid: int, heroid: int):
             session.refresh(hero)
 
 
+def remove_hero_from_team(id: int):
+    """Seach hero by id, remove team id"""
+    with Session(engine) as session:
+        hero = session.get(Hero, id)
+        if hero:
+            hero.team_id = None
+            session.add(hero)
+            session.commit()
+            session.refresh(hero)
+
+
 def main():
     create_db_and_tables()
     create_heroes()
@@ -175,6 +186,7 @@ def main():
     # delete_hero(5)
     select_heroes_teams()
     assign_hero_to_team(2, 7)
+    remove_hero_from_team(1)
     select_heroes_and_teams()
 
 
